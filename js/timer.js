@@ -48,11 +48,7 @@ class Timer {
       this.insertValues(days, hours, mins, seconds)
     }, 1000)
   }
-  stop() {
-   
-    clearInterval(this.intID)
-    this.clearMarkup()
-  }
+
   // ===========
   pad(value) {
     return String(value).padStart(2, '0')
@@ -63,13 +59,6 @@ class Timer {
     hoursC.textContent = h
     minsC.textContent = m
     secondsC.textContent = s
-  }
-  clearMarkup() {
-    const { daysC, hoursC, minsC, secondsC } = this.markup
-    daysC.textContent = '00'
-    hoursC.textContent = '00'
-    minsC.textContent = '00'
-    secondsC.textContent = '00'
   }
 
 }
