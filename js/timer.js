@@ -1,77 +1,156 @@
 
-import refs from './refs.js'
 
-const { daysC, hoursC, minsC, secondsC, startBtn, stopBtn } = refs
-const curDate = document.getElementById('currentDate')
-let d = new Date()
 
-const options = {
-  // weekday: 'long',
-  weekday: 'short',
-  year: 'numeric',
-  // month: 'long',
-  month: 'short',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-}
+// class CountdownTimer {
+//   constructor({ selector, targetDate }) {
+//     this._selector = selector
+//     this._targetDate = targetDate
+//   }
+//   start() {
+//     if (Date.now() < this._targetDate) {
+//       let timerId = setInterval(() => {
+//         const currentTime = Date.now()
+//         const deltaTime = this._targetDate - currentTime
+//         this.updateTimer(deltaTime)
+//       }, 1000)
+//     } else {
+//       clearInterval(timerId)
+//     }
+//   }
+//   updateTimer(time) {
+//     const days = Math.floor(time / (1000 * 60 * 60 * 24))
+//     const hours = this.pad(
+//       Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+//     )
+//     const minutes = this.pad(
+//       Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)),
+//     )
+//     const seconds = this.pad(Math.floor((time % (1000 * 60)) / 1000))
+//     const timer1 = document.querySelector(`${this._selector}`)
+//     const dataDays = timer1.querySelector('[data-value="days"]')
+//     const dataHours = timer1.querySelector('[data-value="hours"]')
+//     const dataMinutes = timer1.querySelector('[data-value="mins"]')
+//     const dataSeconds = timer1.querySelector('[data-value="secs"]')
+//     dataDays.textContent = days
+//     dataHours.textContent = hours
+//     dataMinutes.textContent = minutes
+//     dataSeconds.textContent = seconds
+//   }
+//   pad(value) {
+//     return String(value).padStart(2, '0')
+//   }
+// }
 
-const localeD = d.toLocaleString('Uk-uk', options)
-console.log(localeD) 
+// const newTimer1 = new CountdownTimer({
+//   selector: '#timer-1',
+//   targetDate: new Date('Aug 11, 2022'),
+// })
+// newTimer1.start()
 
-curDate.textContent = localeD
+// const newTimer2 = new CountdownTimer({
+//   selector: '#timer-2',
+//   targetDate: new Date('Jan 27, 2022'),
+// })
+// newTimer2.start()
 
-class Timer {
-  constructor(finishDate, markup) {
-    this.markup = markup
-    this.finishDate = finishDate
-    this.intID = null
-    this.deltaTime = 0
+//============== 1=====
+
+class CountdownTimer {
+  constructor({ selector, targetDate }) {
+    this._selector = selector
+    this._targetDate = targetDate
   }
+
   start() {
-    console.log(`Timer started`)
-    this.intID = setInterval(() => {
-      let currentTime = Date.now() 
-      this.deltaTime = this.finishDate - currentTime 
-    
-      const days = this.pad(Math.floor(this.deltaTime / (1000 * 60 * 60 * 24)))
-      const hours = this.pad(
-        Math.floor((this.deltaTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      )
-      const mins = this.pad(
-        Math.floor((this.deltaTime % (1000 * 60 * 60)) / (1000 * 60)),
-      )
-      const seconds = this.pad(
-        Math.floor((this.deltaTime % (1000 * 60)) / 1000),
-      )
-    
-      this.insertValues(days, hours, mins, seconds)
-    }, 1000)
+    if (Date.now() < this._targetDate) {
+      let timerId = setInterval(() => {
+        const currentTime = Date.now()
+        const deltaTime = this._targetDate - currentTime
+        this.updateTimer(deltaTime)
+      }, 1000)
+    } else {
+      clearInterval(timerId)
+    }
   }
 
-  // ===========
+  updateTimer(time) {
+    const timer1 = document.querySelector(`${this._selector}`)
+    const dataDays = timer1.querySelector('[data-value="days"]')
+    const dataHours = timer1.querySelector('[data-value="hours"]')
+    const dataMinutes = timer1.querySelector('[data-value="mins"]')
+    const dataSeconds = timer1.querySelector('[data-value="secs"]')
+
+    const days = Math.floor(time / (1000 * 60 * 60 * 24))
+    const hours = this.pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),)
+    const minutes = this.pad(
+      Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)),)
+    const seconds = this.pad(Math.floor((time % (1000 * 60)) / 1000))
+
+
+    dataDays.textContent = days;
+    dataHours.textContent = hours < 10 ? "0" + hours : hours;
+    dataMinutes.textContent = minutes < 10 ? "0" + minutes : minutes;
+    dataSeconds.textContent = seconds < 10 ? "0" + seconds : seconds;
+
+  }
   pad(value) {
     return String(value).padStart(2, '0')
   }
-  insertValues(d, h, m, s) {
-    const { daysC, hoursC, minsC, secondsC } = this.markup
-    daysC.textContent = d
-    hoursC.textContent = h
-    minsC.textContent = m
-    secondsC.textContent = s
-  }
-
 }
 
-
-const myTimer = new Timer(new Date(`jan 1, 2022`), {
-  daysC,
-  hoursC,
-  minsC,
-  secondsC,
+const newTimer1 = new CountdownTimer({
+  selector: '#timer-1',
+  targetDate: new Date('Aug 11, 2022'),
 })
-console.log(myTimer)
+newTimer1.start()
+
+const newTimer2 = new CountdownTimer({
+  selector: '#timer-2',
+  targetDate: new Date('Jan 27, 2022'),
+})
+newTimer2.start()
 
 
-startBtn.addEventListener('click', myTimer.start.bind(myTimer))
+
+//===========2==  
+
+// Получаем элементы на странице
+// const kigdsan = document.querySelector("#kigdsan");
+// const days = document.querySelector("#days");
+// const hours = document.querySelector("#hours");
+// const minutes = document.querySelector("#minutes");
+// const seconds = document.querySelector("#seconds");
+
+// const kigdsan = document.querySelector(`${this._selector}`)
+//     const days = timer1.querySelector('[data-value="days"]')
+//     const hours = timer1.querySelector('[data-value="hours"]')
+//     const minutes = timer1.querySelector('[data-value="mins"]')
+//     const seconds = timer1.querySelector('[data-value="secs"]')
+
+
+// // Дата завершения акции
+// const deadline = new Date(`2022-12-31`);
+
+// function updateCounter() {
+//   const currentasdupog = new Date();
+//   const dist = deadline - currentasdupog;
+
+
+//   const toDays = Math.floor(dist / 1000 / 60 / 60 / 24);
+ 
+//   const toHours = Math.floor(dist / 1000 / 60 / 60) % 24;
+ 
+//   const toMinutes = Math.floor(dist / 1000 / 60) % 60;
+
+//   const toSeconds = Math.floor(dist / 1000) % 60;
+
+//   days.innerText = toDays;
+//   hours.innerText = toHours < 10 ? "0" + toHours : toHours;
+//   minutes.innerText = toMinutes < 10 ? "0" + toMinutes : toMinutes;
+//   seconds.innerText = toSeconds < 10 ? "0" + toSeconds : toSeconds;
+// }
+
+// updateCounter();
+// setInterval(updateCounter, 1000);
 
